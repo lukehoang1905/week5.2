@@ -5,6 +5,9 @@ import "./Board.css";
 //this will perform the function that called
 export default class Board extends Component {
   selectSquare = (id) => {
+    if (this.props.startTime) {
+      this.props.setParentsState({ beginTime: Date.now() });
+    }
     let testArray = this.props.test;
     let array = this.props.squaresList;
     array = JSON.parse(JSON.stringify(array));
@@ -26,9 +29,15 @@ export default class Board extends Component {
       test: testArray,
       stateIndex: ndex,
       history: this.props.history,
+      startTime: false,
     });
 
-    this.calculateWinner(array);
+    this.calculateWinner(
+      array,
+      this.props.beginTime,
+      this.props.userName,
+      this.props.status
+    );
   };
 
   goBack = (index) => {
@@ -36,7 +45,7 @@ export default class Board extends Component {
     return;
   };
 
-  calculateWinner = (squaresList) => {
+  calculateWinner = (squaresList, beginTime, userName, status) => {
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -47,12 +56,7 @@ export default class Board extends Component {
       [0, 4, 8],
       [2, 4, 6],
     ];
-    if (!squaresList.includes("")) {
-      this.props.setParentsState({
-        status: "is draw",
-      });
-      return;
-    }
+
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (
@@ -63,20 +67,48 @@ export default class Board extends Component {
         let winner =
           squaresList[a] ===
           "https://thumbs.gfycat.com/BigCircularBabirusa-max-1mb.gif"
-            ? "Yasuo"
+            ? userName
             : "Teemo";
+        let tempDuration = Date.now() - beginTime;
 
         this.props.setParentsState({
-          status: `Over ${winner} has won`,
+          status: winner,
+          duration: tempDuration,
         });
+
         return squaresList[a];
       }
     }
-    return null;
+    if (!squaresList.includes("") && status === "playing") {
+      let tempDuration = Date.now() - beginTime;
+      this.props.setParentsState({
+        status: " draw",
+        duration: tempDuration,
+      });
+      return;
+    }
   };
+  async post() {
+    let data = new URLSearchParams();
+    data.append("player", this.props.status);
+    data.append("score", this.props.duration);
+    const url = `http://ftw-highscores.herokuapp.com/tictactoe-dev`;
+    await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: data.toString(),
+      json: true,
+    });
+
+    return;
+  }
 
   render() {
-    // to update latest status state
+    if (this.props.status !== "playing") {
+      this.post();
+    }
 
     return (
       <>
