@@ -1,5 +1,6 @@
 * {
   margin: 0;
+  text-align: center;
 }
 .square {
   width: 100px;
@@ -14,4 +15,23 @@
   box-shadow: 5px 5px lightcoral;
   transform: translateX(3px);
   transform: translateY(-6px);
+}
+.flex-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+#yasuo {
+  width: 200px;
+  height: 200px;
+}
+#teemo {
+  width: 200px;
+  height: 200px;
+}
+.player-row {
+  display: flex;
+  justify-content: space-evenly;
+}
+.game-interface {
+  border: 1px solid aqua;
 }

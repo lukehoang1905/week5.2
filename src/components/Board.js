@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Square from "./Square";
+import "./Board.css";
 //this is the whole board
 //this will perform the function that called
 export default class Board extends Component {
@@ -12,7 +13,9 @@ export default class Board extends Component {
       return;
     }
 
-    array[id] = this.props.nextPlayer ? "X" : "O";
+    array[id] = this.props.nextPlayer
+      ? "https://thumbs.gfycat.com/BigCircularBabirusa-max-1mb.gif"
+      : "https://www.wykop.pl/cdn/c3201142/comment_qmmyE9GnNFOM0wbGqkpN6gdDpGpNlqxB.gif";
     this.props.history.push(array);
     let ndex = this.props.stateIndex + 1;
     testArray[testArray.length] = `Go back to ${ndex}`;
@@ -57,8 +60,14 @@ export default class Board extends Component {
         squaresList[a] === squaresList[b] &&
         squaresList[a] === squaresList[c]
       ) {
+        let winner =
+          squaresList[a] ===
+          "https://thumbs.gfycat.com/BigCircularBabirusa-max-1mb.gif"
+            ? "Yasuo"
+            : "Teemo";
+
         this.props.setParentsState({
-          status: `Over ${squaresList[a]} has won`,
+          status: `Over ${winner} has won`,
         });
         return squaresList[a];
       }
@@ -71,8 +80,7 @@ export default class Board extends Component {
 
     return (
       <>
-        <div>
-          <h3>Game {this.props.status}</h3>
+        <div className="flex-board">
           <div className="board">
             <div style={{ display: "flex" }}>
               <Square
@@ -127,6 +135,9 @@ export default class Board extends Component {
             </div>
           </div>
           <ol>
+            <li>
+              <button onClick={() => this.goBack(0)}>Game Start</button>
+            </li>
             {this.props.test.map((item, index) => {
               return (
                 <li>
