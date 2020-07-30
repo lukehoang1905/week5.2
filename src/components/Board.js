@@ -92,7 +92,7 @@ export default class Board extends Component {
     let data = new URLSearchParams();
     data.append("player", this.props.status);
     data.append("score", this.props.duration);
-    const url = `http://ftw-highscores.herokuapp.com/tictactoe-dev`;
+    const url = `https://ftw-highscores.herokuapp.com/tictactoe-dev`;
     await fetch(url, {
       method: "POST",
       headers: {
