@@ -22,7 +22,7 @@ export default class App extends Component {
     };
   }
   getHigh = async () => {
-    const url = `http://ftw-highscores.herokuapp.com/tictactoe-dev`;
+    const url = `https://ftw-highscores.herokuapp.com/tictactoe-dev`;
     const response = await fetch(url);
     let data = await response.json();
     this.setState({ scoreTable: data.items });
